@@ -3,16 +3,21 @@
 
 import pygame, sys
 pygame.init()
-
+background = pygame.image.load("trump.png")
 # Define some colours
 WHITE = (255, 255, 255)
 GRAY = (127, 127, 127)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
+ORANGE = (240, 101, 67)
+SEA = (11, 83, 81)
+SKY = (0, 178, 149)
+YELLOW = (227, 181, 5)
+SAND = (184, 180, 45)
 
-SCREENWIDTH = 120
-SCREENHEIGHT = 100
+SCREENWIDTH = 1200
+SCREENHEIGHT = 800
 size = (SCREENWIDTH, SCREENHEIGHT)
 screen = pygame.display.set_mode(size)
 
@@ -27,7 +32,7 @@ class Button():
        font_name = name of font
        font_size = size of font
     """
-    def __init__(self, txt, location, action, bg=WHITE, fg=BLACK, size=(80, 30), font_name="Segoe Print", font_size=16):
+    def __init__(self, txt, location, action, bg=WHITE, fg=BLACK, size=(255, 60), font_name="Segoe Print", font_size=16):
         self.color = bg  # the static (normal) color
         self.bg = bg  # actual background color, can change on mouseover
         self.fg = fg  # text color
@@ -97,13 +102,17 @@ carryOn = True
 clock = pygame.time.Clock()
 
 #create button objects and store in buttons list
-button_01 = Button("Next", (SCREENWIDTH/2, SCREENHEIGHT/3), my_next_function)
-button_02 = Button("Previous", (SCREENWIDTH/2, SCREENHEIGHT/3), my_previous_function)
-button_03 = Button("Quit", (SCREENWIDTH/2, SCREENHEIGHT*2/3), my_quit_function, bg=(50, 200, 20))
-
+button_01 = Button("PLAY", (1072, 440), my_next_function, SKY)
+#button_02 = Button("Previous", (SCREENWIDTH/2, SCREENHEIGHT/3), my_previous_function)
+button_03 = Button("Quit", (1072, 620), my_quit_function, SEA )
+button_04 = Button("Settings", (1072, 500), my_next_function, ORANGE)
+button_05 = Button("How to Play", (1072, 560), my_next_function, YELLOW)
+button_06 = Button("Mission Objective", (1072, 680), my_next_function, BLUE)
+button_07 = Button("Nukes Button", (1072, 740), my_next_function, RED)
+button_08 = Button("The Nukes Have Been Fired", (1072, 740), my_next_function, GRAY)
 #arrange button groups depending on level
-level1_buttons = [button_01, button_03]
-level2_buttons = [button_02, button_03]
+level1_buttons = [button_01, button_03, button_04, button_05, button_06, button_07]
+level2_buttons = [button_01, button_03, button_04, button_05, button_06, button_07, button_08]
 
 #---------Main Program Loop----------
 while carryOn:
@@ -117,10 +126,10 @@ while carryOn:
     # --- Game logic goes here
 
     # --- Draw code goes here
-
+    
     # Clear the screen to white
     screen.fill(WHITE)
-
+    screen.blit(background, (0,0))
     # Draw buttons
     if level == 1:
         for button in level1_buttons:
