@@ -2,14 +2,15 @@
 # Adapted from http://www.dreamincode.net/forums/topic/401541-buttons-and-sliders-in-pygame/
 
 import pygame, sys
-from sprite import donaldTrump
+from sprite import donaldTrump, Button
 pygame.init()
 
+#-------------------------- Colors / Setup Stuff ----------------------------------#
 donald_image = pygame.image.load("donald_trump_8bit.jpg")
 donald = donaldTrump(donald_image, 100)
 
-background = pygame.image.load("trump.png")
-# Define some colours
+MenuBackground = pygame.image.load("trump.png")
+
 WHITE = (255, 255, 255)
 GRAY = (127, 127, 127)
 BLACK = (0, 0, 0)
@@ -26,75 +27,62 @@ SCREENHEIGHT = 800
 size = (SCREENWIDTH, SCREENHEIGHT)
 screen = pygame.display.set_mode(size)
 
-class Button():
-    """This is a class for a generic button.
-       txt = text on the button
-       location = (x,y) coordinates of the button's centre
-       action = name of function to run when button is pressed
-       bg = background colour (default is white)
-       fg = text colour (default is black)
-       size = (width, height) of button
-       font_name = name of font
-       font_size = size of font
-    """
-    def __init__(self, txt, location, action, bg=WHITE, fg=BLACK, size=(255, 60), font_name="Segoe Print", font_size=16):
-        self.color = bg  # the static (normal) color
-        self.bg = bg  # actual background color, can change on mouseover
-        self.fg = fg  # text color
-        self.size = size
+level = 1
+carryOn = True
+clock = pygame.time.Clock()
+#----------------------------------------------------------------------------------#
 
-        self.font = pygame.font.SysFont(font_name, font_size)
-        self.txt = txt
-        self.txt_surf = self.font.render(self.txt, 1, self.fg)
-        self.txt_rect = self.txt_surf.get_rect(center=[s//2 for s in self.size])
-
-        self.surface = pygame.surface.Surface(size)
-        self.rect = self.surface.get_rect(center=location)
-
-        self.call_back_ = action
-
-    def draw(self):
-        self.mouseover()
-
-        self.surface.fill(self.bg)
-        self.surface.blit(self.txt_surf, self.txt_rect)
-        screen.blit(self.surface, self.rect)
-
-    def mouseover(self):
-        """Checks if mouse is over button using rect collision"""
-        self.bg = self.color
-        pos = pygame.mouse.get_pos()
-        if self.rect.collidepoint(pos):
-            self.bg = GRAY  # mouseover color
-
-    def call_back(self):
-        """Runs a function when clicked"""
-        self.call_back_()
-
-def my_shell_function():
+#-------------------------------- Functions ---------------------------------------#
+#---------------- Level Functions ----------------#
+def shell_function():
     """A generic function that prints something in the shell"""
     print('Fire the nukes!')
-
-def my_next_function():
+#---------------#   
+def nextLevel_function():
     """A function that advances to the next level"""
     global level
     level += 1
-
-def my_play_function():
-    """A function that advances to the next level"""
+#---------------#
+def play_function():
+    """A function that leads you to the play screen"""
     global level
-    level += 2
-
-def my_previous_function():
-    """A function that retreats to the previous level"""
+    level = 8
+#---------------#
+def mainMenu_function():
+    """A function that retreats to the main menu"""
     global level
-    level -= 1
-
-def my_quit_function():
+    level = 1
+#---------------#
+def settings_function():
+    """A function that brings you to the settings screen"""
+    global level
+    level = 2
+#---------------#
+def howTo_function():
+    """A function that explains how to play (controls)"""
+    global level
+    level = 3
+#---------------#
+def missionScreen_function():
+    """A function that explains the mission (objective of the game)"""
+    global level
+    level = 4
+#---------------#
+def nuke_function():
+    """A function that brings you to the nuke firing screen"""
+    global level
+    level = 5
+#---------------#
+def northKorea_function():
+    """A function that "fires the nukes" like North Korea"""
+    global level
+    level = 6
+#---------------#
+def quit_function():
     """A function that will quit the game and close the pygame window"""
     pygame.quit()
     sys.exit()
-
+#--------------- Other Functions ---------------#
 def mousebuttondown(level):
     """A function that checks which button was pressed"""
     pos = pygame.mouse.get_pos()
@@ -106,28 +94,24 @@ def mousebuttondown(level):
         for button in level2_buttons:
             if button.rect.collidepoint(pos):
                 button.call_back()
+#----------------------------------------------------------------------------------#
 
-level = 1
-carryOn = True
-clock = pygame.time.Clock()
+#------------------------------- Button Setup -------------------------------------#
+button_01 = Button("PLAY", (1072, 440), play_function, SKY)
+button_02 = Button("Main Menu", (SCREENWIDTH/2, SCREENHEIGHT/3), mainMenu_function)
+button_03 = Button("Quit", (1072, 620), quit_function, SEA )
+button_04 = Button("Settings", (1072, 500), settings_function, ORANGE)
+button_05 = Button("How to Play", (1072, 560), howTo_function, YELLOW)
+button_06 = Button("Mission Objective", (1072, 680), missionScreen_function, BLUE)
+button_07 = Button("Nukes Button", (1072, 740), nuke_function, RED)
+button_08 = Button("The Nukes Have Been Fired", (1072, 740), northKorea_function, GRAY)
 
-#arrange button groups depending on level
-level1_buttons = [button_play, button_settings, button_quit]
-level2_buttons = [button_quit]
-
-button_01 = Button("PLAY", (1072, 440), my_next_function, SKY)
-#button_02 = Button("Previous", (SCREENWIDTH/2, SCREENHEIGHT/3), my_previous_function)
-button_03 = Button("Quit", (1072, 620), my_quit_function, SEA )
-button_04 = Button("Settings", (1072, 500), my_next_function, ORANGE)
-button_05 = Button("How to Play", (1072, 560), my_next_function, YELLOW)
-button_06 = Button("Mission Objective", (1072, 680), my_next_function, BLUE)
-button_07 = Button("Nukes Button", (1072, 740), my_next_function, RED)
-button_08 = Button("The Nukes Have Been Fired", (1072, 740), my_next_function, GRAY)
-#arrange button groups depending on level
+#--------------- Button List For Menu ---------------#
 level1_buttons = [button_01, button_03, button_04, button_05, button_06, button_07]
 level2_buttons = [button_01, button_03, button_04, button_05, button_06, button_07, button_08]
+#----------------------------------------------------------------------------------#
 
-#---------Main Program Loop----------
+#----------------------------- Main Program Loop ----------------------------------#
 while carryOn:
     # --- Main event loop ---
     for event in pygame.event.get(): # Player did something
@@ -142,7 +126,7 @@ while carryOn:
     
     # Clear the screen to white
     screen.fill(WHITE)
-    screen.blit(background, (0,0))
+    screen.blit(MenuBackground, (0,0))
     # Draw buttons
     if level == 1:
         for button in level1_buttons:
@@ -160,3 +144,4 @@ while carryOn:
     clock.tick(60)
 
 pygame.quit()
+#----------------------------------------------------------------------------------#
