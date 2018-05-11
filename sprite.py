@@ -40,7 +40,7 @@ class Button():
 
         self.call_back_ = action
 
-    def draw(self):
+    def draw(self, screen):
         self.mouseover()
 
         self.surface.fill(self.bg)

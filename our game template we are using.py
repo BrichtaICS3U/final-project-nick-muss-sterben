@@ -68,15 +68,10 @@ def missionScreen_function():
     global level
     level = 4
 #---------------#
-def nuke_function():
-    """A function that brings you to the nuke firing screen"""
-    global level
-    level = 5
-#---------------#
 def northKorea_function():
     """A function that "fires the nukes" like North Korea"""
     global level
-    level = 6
+    level = 5
 #---------------#
 def quit_function():
     """A function that will quit the game and close the pygame window"""
@@ -87,11 +82,11 @@ def mousebuttondown(level):
     """A function that checks which button was pressed"""
     pos = pygame.mouse.get_pos()
     if level == 1:
-        for button in level1_buttons:
+        for button in mainMenu_buttons:
             if button.rect.collidepoint(pos):
                 button.call_back()
     elif level == 2:
-        for button in level2_buttons:
+        for button in settings_buttons:
             if button.rect.collidepoint(pos):
                 button.call_back()
 #----------------------------------------------------------------------------------#
@@ -103,12 +98,17 @@ button_03 = Button("Quit", (1072, 620), quit_function, SEA )
 button_04 = Button("Settings", (1072, 500), settings_function, ORANGE)
 button_05 = Button("How to Play", (1072, 560), howTo_function, YELLOW)
 button_06 = Button("Mission Objective", (1072, 680), missionScreen_function, BLUE)
-button_07 = Button("Nukes Button", (1072, 740), nuke_function, RED)
-button_08 = Button("The Nukes Have Been Fired", (1072, 740), northKorea_function, GRAY)
+button_07 = Button("Nukes Button", (1072, 740), northKorea_function, RED)
+button_08 = Button("Nukes Have Been Fired", (1072, 740), play_function, RED)
 
 #--------------- Button List For Menu ---------------#
-level1_buttons = [button_01, button_03, button_04, button_05, button_06, button_07]
-level2_buttons = [button_01, button_03, button_04, button_05, button_06, button_07, button_08]
+mainMenu_buttons = [button_01, button_03, button_04, button_05, button_06, button_07]
+settings_buttons = []
+howToPlay_buttons = []
+missionScreen_buttons = []
+nukesFiredScreen = [button_01, button_03, button_04, button_05, button_06, button_08]
+
+
 #----------------------------------------------------------------------------------#
 
 #----------------------------- Main Program Loop ----------------------------------#
@@ -129,13 +129,14 @@ while carryOn:
     screen.blit(MenuBackground, (0,0))
     # Draw buttons
     if level == 1:
-        for button in level1_buttons:
-            button.draw()
+        for button in mainMenu_buttons:
+            button.draw(screen)
     elif level == 2:
-        for button in level2_buttons:
-            button.draw()
-    elif level == 3:
-        donald.display(400, 600, screen);
+        for button in settings_buttons:
+            button.draw(screen)
+    elif level == 5:
+        for button in nukesFiredScreen:
+            button.draw(screen)
 
     # Update the screen with queued shapes
     pygame.display.flip()
