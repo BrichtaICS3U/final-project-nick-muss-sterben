@@ -76,7 +76,7 @@ class donaldTrump(pygame.sprite.Sprite):
 
     def __init__(self, picture, health):
         super().__init__()
-        self.image = picture
+        self.image = pygame.transform.scale(picture, (111, 162))
         self.image.fill(WHITE)
         self.image.set_colorkey(WHITE)
 
@@ -85,11 +85,12 @@ class donaldTrump(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect()
 
-    def display(self, x, y, screen):
-        screen.blit(self.image, (self.x, self.y))
+    def display(self, screen, x, y):
+        donald_image = pygame.image.load("donald_trump_8bit.jpg")
+        screen.blit(donald_image, (x, y))
 
     def moveLeft(self, xspeed):
-        self.rect.x -= self.xspeed
+        self.rect.x -= xspeed
 
     def moveRight(self, xspeed):
-        self.rect.x += self.xspeed
+        self.rect.x += xspeed

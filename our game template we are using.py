@@ -92,22 +92,24 @@ def mousebuttondown(level):
 #----------------------------------------------------------------------------------#
 
 #------------------------------- Button Setup -------------------------------------#
-button_01 = Button("PLAY", (1072, 440), play_function, SKY)
+button_01 = Button("PLAY", (1072, 440), play_function, WHITE)
 button_02 = Button("Main Menu", (SCREENWIDTH/2, SCREENHEIGHT/3), mainMenu_function)
-button_03 = Button("Quit", (1072, 620), quit_function, SEA )
-button_04 = Button("Settings", (1072, 500), settings_function, ORANGE)
-button_05 = Button("How to Play", (1072, 560), howTo_function, YELLOW)
-button_06 = Button("Mission Objective", (1072, 680), missionScreen_function, BLUE)
+button_03 = Button("Quit", (1072, 620), quit_function, RED )
+button_04 = Button("Settings", (1072, 500), settings_function, RED)
+button_05 = Button("How to Play", (1072, 560), howTo_function, WHITE)
+button_06 = Button("Mission Objective", (1072, 680), missionScreen_function, WHITE)
 button_07 = Button("Nukes Button", (1072, 740), northKorea_function, RED)
 button_08 = Button("Nukes Have Been Fired", (1072, 740), play_function, RED)
 
 #--------------- Button List For Menu ---------------#
 mainMenu_buttons = [button_01, button_03, button_04, button_05, button_06, button_07]
-settings_buttons = []
+settings_buttons = [button_02]
 howToPlay_buttons = []
 missionScreen_buttons = []
 nukesFiredScreen = [button_01, button_03, button_04, button_05, button_06, button_08]
 
+all_sprites_list = pygame.sprite.Group()
+all_sprites_list.add(donald)
 
 #----------------------------------------------------------------------------------#
 
@@ -129,17 +131,27 @@ while carryOn:
     screen.blit(MenuBackground, (0,0))
     # Draw buttons
     if level == 1:
+        MenuBackground = pygame.image.load("trump.png")
         for button in mainMenu_buttons:
             button.draw(screen)
     elif level == 2:
+        screen.fill(WHITE)
         for button in settings_buttons:
             button.draw(screen)
     elif level == 5:
         for button in nukesFiredScreen:
             button.draw(screen)
+    elif level == 8: #Actual Game Screen
+        screen.fill(WHITE)
+        donald.display(screen, 200, 200)
+        donald.moveRight(10)
 
+    all_sprites_list.update()
+    all_sprites_list.draw(screen)
     # Update the screen with queued shapes
     pygame.display.flip()
+
+
 
     # --- Limit to 60 frames per second
     clock.tick(60)
