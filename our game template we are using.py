@@ -2,7 +2,8 @@
 # Adapted from http://www.dreamincode.net/forums/topic/401541-buttons-and-sliders-in-pygame/
 
 import pygame, sys
-from sprite import donaldTrump, Button
+from sprite import donaldTrump, Button, createBullet
+from vector2d import Vec2d
 pygame.init()
 
 #-------------------------- Colors / Setup Stuff ----------------------------------#
@@ -108,8 +109,7 @@ howToPlay_buttons = []
 missionScreen_buttons = []
 nukesFiredScreen = [button_01, button_03, button_04, button_05, button_06, button_08]
 
-all_sprites_list = pygame.sprite.Group()
-all_sprites_list.add(donald)
+bullet_list = pygame.sprite.Group()
 
 #----------------------------------------------------------------------------------#
 
@@ -129,6 +129,7 @@ while carryOn:
     # Clear the screen to white
     screen.fill(WHITE)
     screen.blit(MenuBackground, (0,0))
+
     # Draw buttons
     if level == 1:
         MenuBackground = pygame.image.load("trump.png")
@@ -142,16 +143,30 @@ while carryOn:
         for button in nukesFiredScreen:
             button.draw(screen)
     elif level == 8: #Actual Game Screen
+        keys = pygame.key.get_pressed()
+        bullet_list.update()
         screen.fill(WHITE)
-        donald.display(screen, 200, 200)
-        donald.moveRight(10)
+        donald.display(screen)
+        bullet_list.draw(screen)
+        
+        if keys[pygame.K_LEFT]:
+            donald.moveLeft(5)
+        if keys[pygame.K_RIGHT]:
+            donald.moveRight(5)
+        if keys[pygame.K_UP]:
+            donald.moveUp(5)
+        if keys[pygame.K_DOWN]:
+            donald.moveDown(5)
+        if keys[pygame.K_SPACE]:
+            donald.shoot(bullet_list)
+            #for bullets in bullet_list:
+            #    bullets.move()
+            
+        
 
-    all_sprites_list.update()
-    all_sprites_list.draw(screen)
+    
     # Update the screen with queued shapes
     pygame.display.flip()
-
-
 
     # --- Limit to 60 frames per second
     clock.tick(60)
