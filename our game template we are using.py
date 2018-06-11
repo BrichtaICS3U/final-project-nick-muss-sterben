@@ -2,9 +2,12 @@
 # Adapted from http://www.dreamincode.net/forums/topic/401541-buttons-and-sliders-in-pygame/
 
 import pygame, sys
+pygame.init()
+pygame.mixer.pre_init(frequency=44100, size=-16, channels=2, buffer=4096)
+pygame.mixer.music.load("songone.wav")
+pygame.mixer.music.play(-1) 
 from sprite import donaldTrump, Button, createBullet
 from vector2d import Vec2d
-pygame.init()
 
 #-------------------------- Colors / Setup Stuff ----------------------------------#
 donald_image = pygame.image.load("donald_trump_8bit.jpg")
@@ -170,9 +173,21 @@ while carryOn:
         screen.blit(Background, (0,0))
         for button in settings_buttons:
             button.draw(screen)
-        font = pygame.font.Font(None, 36)
-        text = font.render("The evil James Comey has caused a zombie appocalyspse in an act of revenge for his firing", 1, (10, 10, 10))
+        font = pygame.font.Font(None, 60)
+        text = font.render("UP arrow will move you up the screen", 1, (10, 10, 10))
         screen.blit(text, (50,50))
+        font = pygame.font.Font(None, 60)
+        text = font.render("DOWN arrow will move you down the screen", 1, (10, 10, 10))
+        screen.blit(text, (50,150))
+        font = pygame.font.Font(None, 60)
+        text = font.render("LEFT arrow will move you to the left", 1, (10, 10, 10))
+        screen.blit(text, (50,250))
+        font = pygame.font.Font(None, 60)
+        text = font.render("RIGHT arrow will move you to the right", 1, (10, 10, 10))
+        screen.blit(text, (50,350))
+        font = pygame.font.Font(None, 60)
+        text = font.render("SPACEBAR to shoot", 1, (10, 10, 10))
+        screen.blit(text, (50,450))
     elif level == 4:
         screen.fill(WHITE)
         screen.blit(Background, (0,0))
